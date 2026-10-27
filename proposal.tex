@@ -1,0 +1,184 @@
+% LZSCC.300 Third Year Project -- Project Proposal Template
+%
+% Compile with pdfLaTeX or LuaLaTeX, and Biber for the references
+% (e.g. `latexmk -pdf proposal.tex`; Overleaf does this automatically).
+%
+% Length: 3-6 pages plus references.
+% The proposal is AI RED: no generative AI for any part of the text (see the module handbook).
+% The grey guidance text explains what goes into each section. Delete it as you
+% write, or hide all of it at once with \guidancefalse below.
+
+\documentclass[11pt,a4paper]{article}
+
+% ----- guidance switch ----------------------------------------------------------
+\newif\ifguidance
+\guidancetrue % change to \guidancefalse to hide all guidance text
+
+% ----- fonts and language -------------------------------------------------------
+\usepackage{iftex}
+\ifPDFTeX
+	\usepackage[T1]{fontenc}
+	\usepackage{lmodern}
+\else
+	\usepackage{fontspec}
+\fi
+\usepackage[british]{babel}
+\usepackage{csquotes}
+\usepackage{microtype}
+
+% ----- layout -------------------------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage{enumitem}
+
+% ----- figures, tables, units -----------------------------------------------------
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup[table]{position=top} % table captions go above the table, figure captions below
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{pgfgantt}
+
+% ----- references -----------------------------------------------------------------
+% Use one style consistently: IEEE (numeric, below) or Harvard (author-date: style=authoryear).
+\usepackage[style=ieee,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% ----- links and cross-references (load last) -------------------------------------
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+% ----- guidance text --------------------------------------------------------------
+\newcommand{\guidance}[1]{\ifguidance{\color{gray}\itshape #1\par}\fi}
+
+% ----- your details -----------------------------------------------------------------
+\newcommand{\projecttitle}{Your Project Title}
+\newcommand{\studentname}{Your Name}
+\newcommand{\studentid}{12345678}
+\newcommand{\supervisor}{Your Supervisor}
+
+\hypersetup{pdftitle={\projecttitle},pdfauthor={\studentname}}
+
+\begin{document}
+
+% ----- title block --------------------------------------------------------------------
+\begin{center}
+	{\small LZSCC.300 Third Year Project -- Project Proposal}\par\medskip
+	{\LARGE\bfseries \projecttitle\par}\medskip
+	\studentname{} (\studentid) \quad\textbullet\quad Supervisor: \supervisor \quad\textbullet\quad \today
+\end{center}
+
+\begin{abstract}
+	\guidance{About 150 words, written last. In four to five sentences: the overall aim of the project, why it matters (motivation), how you will do it (methods), and what you expect to find or deliver (expected results).}
+\end{abstract}
+
+% ===================================================================================
+\section{Introduction}\label{sec:introduction}
+
+\guidance{Motivate the project. Go from general to specific: start with the wider context, narrow down to the problem you address, and back up every claim with evidence and a citation~\cite{example-online}. State the evidence, not who said it: write \enquote{X has increased by 18\%~[3]}, not \enquote{The Guardian reports that \dots}.}
+
+\guidance{End with a short paragraph that summarises your proposed project, and a signposting paragraph: \enquote{The remainder of this proposal is structured as follows. \Cref{sec:background} \dots}}
+
+% ===================================================================================
+\section{Background and Related Work}\label{sec:background}
+
+\guidance{Show where your project fits into existing work: similar projects, tools, systems, and papers~\cite{example-article,example-inproceedings}. This is an integrated synthesis, not a list of who did what. For each source, explain why it is relevant to your project, what its limitations are (\enquote{however, \dots}), and how your project addresses them (\enquote{therefore, \dots}).}
+
+\guidance{Organise the section thematically, chronologically, methodologically, or as a funnel (general background $\rightarrow$ closely related work). End with the scope of your project: what exactly you will do, and what not.}
+
+% ===================================================================================
+\section{Proposed Project}\label{sec:project}
+
+\subsection{Aims and Objectives}\label{sec:objectives}
+
+\guidance{State the overall aim in one sentence. Then list the objectives. Every objective must be measurable: how will you (and the examiners) know that you achieved it?}
+
+The aim of this project is to \dots
+
+\begin{enumerate}[label=\textbf{O\arabic*}]
+	\item \textbf{Objective one} -- \guidance{e.g.\ \enquote{Implement a route planner that finds optimal routes on the map of Leipzig in under one second.}}
+	\item \textbf{Objective two} -- \dots
+	\item \textbf{Objective three} -- \dots
+\end{enumerate}
+
+\subsection{Methodology}\label{sec:methodology}
+
+\guidance{Describe in detail how you will achieve each objective: development process, architecture and technologies, algorithms, datasets, experimental setup, user studies, \dots}
+
+\subsection{Evaluation}\label{sec:evaluation}
+
+\guidance{Your plan for analysis: how will you evaluate the results? Name concrete metrics, baselines, benchmarks, test suites, or study designs, and say how they relate to the objectives in \cref{sec:objectives}.}
+
+\subsection{Ethics}\label{sec:ethics}
+
+\guidance{Only if your project involves people (user studies, surveys, interviews) or personal data: explain what you will collect, how you will protect participants and data, and when you will apply for ethics approval. Otherwise delete this subsection.}
+
+% ===================================================================================
+\section{Programme of Work}\label{sec:programme}
+
+\guidance{Break the project into stages and say what each stage delivers and how long it takes. Show the schedule as a Gantt chart (\cref{fig:gantt}). Include time for writing, buffer time, and the module milestones (proposal, assessment forms). Writing can and should start early.}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{ganttchart}[
+			x unit=.55cm,
+			y unit title=.5cm,
+			title height=1,
+			y unit chart=.6cm,
+			vgrid={*{9}{gray!25},{gray!80,line width=1pt},*{10}{gray!25}},
+			hgrid=false,
+			title label font=\footnotesize,
+			bar label font=\small,
+			milestone label font=\small\itshape,
+			bar/.append style={fill=blue!30},
+			milestone/.append style={fill=red!70},
+		]{1}{20}
+		\gantttitle{Michaelmas term (weeks)}{10}
+		\gantttitle{Lent term (weeks)}{10} \\
+		\gantttitlelist{1,...,20}{1} \\
+		\ganttbar{Background research}{1}{4} \\
+		\ganttmilestone{Proposal}{3} \\
+		\ganttbar{Design}{3}{5} \\
+		\ganttbar{Implementation}{5}{13} \\
+		\ganttbar{Evaluation}{12}{16} \\
+		\ganttbar{Writing the report}{6}{19} \\
+		\ganttbar{Buffer}{19}{20} \\
+		\ganttmilestone{Assessment forms}{5}
+		\ganttmilestone{}{10}
+		\ganttmilestone{}{15}
+	\end{ganttchart}
+	\caption{Project schedule. There is a four-week break between weeks 10 and 11.}
+	\label{fig:gantt}
+\end{figure}
+
+% ===================================================================================
+\section{Resources Required}\label{sec:resources}
+
+\guidance{Hardware, software, licences, datasets, compute, access to people or organisations -- and who provides them. Write \enquote{No special resources are required.} if that is the case.}
+
+% ===================================================================================
+\section{Risks and Contingency}\label{sec:risks}
+
+\guidance{What could go wrong, and what will you do then? Think about risks specific to your project.}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Risks and mitigation.}
+	\label{tab:risks}
+	\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X l l >{\raggedright\arraybackslash}X}
+		\toprule
+		Risk & Likelihood & Impact & Mitigation \\
+		\midrule
+		Dataset not available in time & medium & high & Use synthetic data first, contact provider early \\
+		Data loss & low & high & Version control, regular backups \\
+		Illness or other absence & low & medium & Buffer time in the schedule \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+% ===================================================================================
+\printbibliography[heading=bibintoc]
+
+\end{document}
