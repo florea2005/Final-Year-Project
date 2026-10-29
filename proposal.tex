@@ -40,6 +40,7 @@
 \usepackage{siunitx}
 \usepackage{xcolor}
 \usepackage{pgfgantt}
+\usepackage{float} 
 
 % ----- references -----------------------------------------------------------------
 % Use one style consistently: IEEE (numeric, below) or Harvard (author-date: style=authoryear).
@@ -54,10 +55,10 @@
 \newcommand{\guidance}[1]{\ifguidance{\color{gray}\itshape #1\par}\fi}
 
 % ----- your details -----------------------------------------------------------------
-\newcommand{\projecttitle}{Your Project Title}
-\newcommand{\studentname}{Your Name}
-\newcommand{\studentid}{12345678}
-\newcommand{\supervisor}{Your Supervisor}
+\newcommand{\projecttitle}{Designing an Interactive Educational Framework for LZSCC.111}
+\newcommand{\studentname}{Andrei Florea}
+\newcommand{\studentid}{39603784}
+\newcommand{\supervisor}{Tobias Meggendorfer}
 
 \hypersetup{pdftitle={\projecttitle},pdfauthor={\studentname}}
 
@@ -71,56 +72,74 @@
 \end{center}
 
 \begin{abstract}
-	\guidance{About 150 words, written last. In four to five sentences: the overall aim of the project, why it matters (motivation), how you will do it (methods), and what you expect to find or deliver (expected results).}
+	{Students on LZSCC.111 Software Development learn to program in C, where program state is hidden and mistakes often show up only as a wrong number or a crash. This project will build a framework of interactive C exercises that increase in difficulty. In each exercise the student implements a single function. Provided scaffolding handles input and output, and a Python visualiser shows what the code does step by step, such as the bars of an array being searched or a robot moving through a maze. Student code runs inside a C harness that records each step as an event trace and catches crashes, infinite loops and out-of-bounds access. The framework will be evaluated technically and through a small study with students, comparing the exercises with and without the visualiser. The expected outcome is a reusable set of tasks for LZSCC.111, along with indicative evidence on whether visual feedback improves novice understanding and engagement.}
 \end{abstract}
 
 % ===================================================================================
 \section{Introduction}\label{sec:introduction}
 
-\guidance{Motivate the project. Go from general to specific: start with the wider context, narrow down to the problem you address, and back up every claim with evidence and a citation~\cite{example-online}. State the evidence, not who said it: write \enquote{X has increased by 18\%~[3]}, not \enquote{The Guardian reports that \dots}.}
-
-\guidance{End with a short paragraph that summarises your proposed project, and a signposting paragraph: \enquote{The remainder of this proposal is structured as follows. \Cref{sec:background} \dots}}
-
+LZSCC.111 introduces students to programming in C. For a beginner, C gives little visible feedback~\cite{smith2000efficacy}. A loop that searches an array or a function that moves a robot produces at most a line of printed output, and the student cannot see how the program reached its result~\cite{fincher2020notional}. Reading input, parsing it and formatting output also take effort unrelated to the concept being taught, so beginners spend their time on scanf and printf instead of the algorithm. Research on algorithm visualisation has found that showing execution helps most when students interact with the visualisation rather than only watch it~\cite{hundhausen2002meta, naps2002exploring}. This project applies that idea to LZSCC.111. Students write only the core logic of each task in C, and a Python visualiser shows its effect.
+The rest of this proposal is organised as follows. Section 2 reviews related work and the gap this project addresses. Section 3 sets out the aims and objectives, followed by the methodology. Section 4 describes the programme of work, Section 5 relates to the resources required and last but not least Section 6 reveals the risks and contingencies.
 % ===================================================================================
 \section{Background and Related Work}\label{sec:background}
 
-\guidance{Show where your project fits into existing work: similar projects, tools, systems, and papers~\cite{example-article,example-inproceedings}. This is an integrated synthesis, not a list of who did what. For each source, explain why it is relevant to your project, what its limitations are (\enquote{however, \dots}), and how your project addresses them (\enquote{therefore, \dots}).}
+Novices learn to program by building a notional machine, a mental model of what happens when code runs~\cite{fincher2020notional}, and an incomplete model causes many misconceptions~\cite{sorva2013notional}. The model is hard to build in C, where state is hidden and errors often appear only as a wrong number or a crash. Smith and Webb showed that visualisation helps novice C programmers~\cite{smith2000efficacy}, although their tool displayed generic memory rather than the concept being taught. Here, each task is visualised in its own terms, such as array bars or a robot in a maze.
 
-\guidance{Organise the section thematically, chronologically, methodologically, or as a funnel (general background $\rightarrow$ closely related work). End with the scope of your project: what exactly you will do, and what not.}
+Hundhausen et al. found that visualisations work best when students engage with them actively rather than just watching~\cite{hundhausen2002meta}, and Naps et al. formalised this as an engagement taxonomy~\cite{naps2002exploring}. Classic algorithm animations replay pre-built code and so keep students at the “viewing” level. In this framework the animation comes from the student’s own code, which places them at the “constructing” level.
 
+General-purpose tools such as Jeliot 3~\cite{moreno2004} and Online Python Tutor~\cite{guo2013pythontutor} visualise arbitrary programs, and Python Tutor also lets students step backwards. What they display is limited to variables, frames and pointers, not what an algorithm is doing, and most of them support Java or Python rather than C~\cite{sorva2013review}. Microworlds such as Karel the Robot~\cite{pattis1981} make every action visible in a simplified language. The framework combines the two approaches: students write real C, and scaffolding functions emit events that a Python visualiser replays.
+
+Plain-language error messages help novices~\cite{becker2016}, and automated assessment usually compares final output in a sandbox~\cite{ihantola2010review}. Output checks ignore how a student reached the answer, and crashes give little feedback. The C harness therefore reports crashes, timeouts and out-of-bounds errors clearly, keeps the trace up to the point of failure, and compares traces with a reference solution.
+
+Scope. The project will deliver at least one array and one labyrinth task for LZSCC.111, together with the harness, the visualiser, automated tests and a small descriptive user study. It will not deliver a general C visualiser, a grading system or a statistically powered evaluation.
 % ===================================================================================
 \section{Proposed Project}\label{sec:project}
 
 \subsection{Aims and Objectives}\label{sec:objectives}
 
-\guidance{State the overall aim in one sentence. Then list the objectives. Every objective must be measurable: how will you (and the examiners) know that you achieved it?}
-
-The aim of this project is to \dots
+The aim of the project is to build a reusable framework of visual C tasks of increasing difficulty,
+aligned with the LZSCC.111 curriculum, and to gather evidence on whether it helps students learn. The objectives are:
 
 \begin{enumerate}[label=\textbf{O\arabic*}]
-	\item \textbf{Objective one} -- \guidance{e.g.\ \enquote{Implement a route planner that finds optimal routes on the map of Leipzig in under one second.}}
-	\item \textbf{Objective two} -- \dots
-	\item \textbf{Objective three} -- \dots
+	\item \textbf{} -- Literature review on program visualisation, scaffolding and novice programming. 
+	\item \textbf{} -- Design the architecture that connects students' C code to Python visualiser through an event-trace format.
+	\item \textbf{} -- Build a C harness that runs code safely, catching crashes, infinite loops and out-of-bounds errors then reporting them in plain language.
+    \item \textbf{} -- Implementing (at least 2) tasks with different difficulty, each with C scaffolding, a solution and a visualisation.
+    \item \textbf{} -- Automated tests for the framework so that new tasks can be added.
+    \item \textbf{} -- Evaluate the framework technically and through a small user study.
+
+    \textit{} The project addresses two research questions:
+    
+    \textit{} RQ1: How can a visual feedback framework for C be designed so that students implement only the core logic, while new tasks remain easy to add?
+
+    \textit{} RQ2: Do students who use the visual tasks report better understanding and engagement than when they use plain text-based exercises?
+    
 \end{enumerate}
 
 \subsection{Methodology}\label{sec:methodology}
 
-\guidance{Describe in detail how you will achieve each objective: development process, architecture and technologies, algorithms, datasets, experimental setup, user studies, \dots}
+The project will follow an iterative approach, with a working increment shown to the supervisor every week. This suits the project because each task can be built, tried and adjusted on its own, and early feedback on the first task will shape the design of the rest. A waterfall approach was considered and rejected, since the requirements for later tasks depend on what is learned from the first prototype.
+
+The framework separates student code from visualisation through an event trace. Students solve each task by calling scaffolding functions, such as one that compares two elements or moves the robot, and each function records its action as an event (e.g., “compared index 3”). The C harness writes these events as JSON lines to a separate file, so the student’s printf output does not interfere. The Python visualiser then replays the trace as an animation. Since events are flushed as they occur, a crashing program still leaves a trace up to the point of failure (O3). The trace also lets students step backwards~\cite{guo2013pythontutor} and makes visualisations testable: automated tests compare it against the trace of a reference solution~\cite{ihantola2010review}(O5).
 
 \subsection{Evaluation}\label{sec:evaluation}
 
-\guidance{Your plan for analysis: how will you evaluate the results? Name concrete metrics, baselines, benchmarks, test suites, or study designs, and say how they relate to the objectives in \cref{sec:objectives}.}
+The evaluation has two parts, one for each research question. For RQ1, every
+task must accept its reference solution and catch a set of deliberately faulty solutions, such as an
+off-by-one error, an infinite loop and an out-of-bounds access. The time and lines of code needed
+to add a new task will also be measured. For RQ2, participants will solve tasks with and without
+the visualiser and then complete a questionnaire on understanding and engagement, including
+the System Usability Scale~\cite{brooke1996sus}. Where possible, a short concept quiz will be given before and after the session. Results will be analysed descriptively.
 
-\subsection{Ethics}\label{sec:ethics}
+\subsection{Participation and ethics}\label{sec:ethics}
 
-\guidance{Only if your project involves people (user studies, surveys, interviews) or personal data: explain what you will collect, how you will protect participants and data, and when you will apply for ethics approval. Otherwise delete this subsection.}
+The user study will aim for 10 to 15 participants, current LZSCC.111 students. This size is realistic for the timeframe and enough for a descriptive comparison, though not for statistically significant results.
+Participants will receive an information sheet and sign a consent form, and all responses will be anonymised. Ethics approval will be requested early in Michaelmas term so that the study can be done in the Lent term. Participation is voluntary and has no effect on LZSCC.111 marks; participants may withdraw at any time. Data will be stored securely in line with GDPR and deleted after the project.
 
 % ===================================================================================
 \section{Programme of Work}\label{sec:programme}
 
-\guidance{Break the project into stages and say what each stage delivers and how long it takes. Show the schedule as a Gantt chart (\cref{fig:gantt}). Include time for writing, buffer time, and the module milestones (proposal, assessment forms). Writing can and should start early.}
-
-\begin{figure}[htbp]
+\begin{figure}[H]
 	\centering
 	\begin{ganttchart}[
 			x unit=.55cm,
@@ -138,11 +157,14 @@ The aim of this project is to \dots
 		\gantttitle{Michaelmas term (weeks)}{10}
 		\gantttitle{Lent term (weeks)}{10} \\
 		\gantttitlelist{1,...,20}{1} \\
-		\ganttbar{Background research}{1}{4} \\
+		\ganttbar{Literature review}{1}{4} \\
 		\ganttmilestone{Proposal}{3} \\
-		\ganttbar{Design}{3}{5} \\
-		\ganttbar{Implementation}{5}{13} \\
-		\ganttbar{Evaluation}{12}{16} \\
+		\ganttbar{Curriculum analysis}{2}{4} \\
+		\ganttbar{Framework design}{4}{6} \\
+		\ganttbar{Ethics application}{6}{8} \\
+		\ganttbar{Array tasks}{5}{7} \\
+		\ganttbar{Labyrinth tasks}{7}{11} \\
+		\ganttbar{Student evaluation}{13}{16} \\
 		\ganttbar{Writing the report}{6}{19} \\
 		\ganttbar{Buffer}{19}{20} \\
 		\ganttmilestone{Assessment forms}{5}
@@ -155,15 +177,15 @@ The aim of this project is to \dots
 
 % ===================================================================================
 \section{Resources Required}\label{sec:resources}
-
-\guidance{Hardware, software, licences, datasets, compute, access to people or organisations -- and who provides them. Write \enquote{No special resources are required.} if that is the case.}
+\begin{itemize}
+	\item \textbf{Software:} gcc/clang, Python, pygame and Git are all free and open-source, and I will install them myself. A free personal GitHub account (username: florea2005). Overleaf: a free account, or access through Lancaster’s email.
+	\item \textbf{Hardware:} My personal laptop will be used for development, testing and writing the report. No special hardware or GPU is needed. Lancaster University Leipzig’s lab machines will be used during testing to confirm that the tasks run in the real LZSCC.111 environment.
+\end{itemize}
 
 % ===================================================================================
 \section{Risks and Contingency}\label{sec:risks}
 
-\guidance{What could go wrong, and what will you do then? Think about risks specific to your project.}
-
-\begin{table}[htbp]
+\begin{table}[H]
 	\centering
 	\caption{Risks and mitigation.}
 	\label{tab:risks}
@@ -171,9 +193,10 @@ The aim of this project is to \dots
 		\toprule
 		Risk & Likelihood & Impact & Mitigation \\
 		\midrule
-		Dataset not available in time & medium & high & Use synthetic data first, contact provider early \\
-		Data loss & low & high & Version control, regular backups \\
+		Too few participants for the study & medium & high & run it during a workshop \\
+		C-Python communication is harder than expected & medium & high & build a minimal prototype with only array task first \\
 		Illness or other absence & low & medium & Buffer time in the schedule \\
+        Ethics approval is delayed & medium & high & run it only with supervisor \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
